@@ -1,7 +1,7 @@
 About baumwelch
 ===============
 
-Home: http://www.openfst.org/twiki/bin/view/Contrib/FstContrib
+Home: http://bauwmelch.opengrm.org
 
 Package license: Apache-2.0
 
