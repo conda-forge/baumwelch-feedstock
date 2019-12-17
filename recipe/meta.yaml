@@ -6,11 +6,11 @@ package:
   version: {{ version }}
 
 source:
-  url: http://www.openfst.org/twiki/pub/Contrib/FstContrib/{{ name }}-{{ version }}.tar.gz
+  url: http://www.opengrm.org/twiki/pub/GRM/BaumWelchDownload/{{ name }}-{{ version }}.tar.gz
   sha256: 01c2cc16c5eedcb28cdc2ae83659fc95bab0a0d32a7e9209fbecd59b8747d0f7
   
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
@@ -28,13 +28,13 @@ test:
     - baumwelchdecode --helpshort || [[ $? == 1 ]]
 
 about:
-  home: http://www.openfst.org/twiki/bin/view/Contrib/FstContrib
+  home: http://bauwmelch.opengrm.org
   license: Apache-2.0
   license_file: LICENSE
   summary: Baum-Welch/expectation-maximization training and decoding
   description: |
     A library for estimating the parameters of a discrete HMM
-  doc_url: http://www.openfst.org/twiki/bin/view/Contrib/FstContrib
+  doc_url: http://www.opengrm.org/twiki/bin/view/GRM/BaumWelchDocs
 
 extra:
   recipe-maintainers:
