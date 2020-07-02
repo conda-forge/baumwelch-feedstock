@@ -1,14 +1,14 @@
 {% set name = "baumwelch" %}
-{% set version = "0.3.2" %}
+{% set version = "0.3.3" %}
 
-package: 
+package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
   url: http://www.opengrm.org/twiki/pub/GRM/BaumWelchDownload/{{ name }}-{{ version }}.tar.gz
-  sha256: bb82a764834dfe2f6fbd76fea0cbfef12b6be091a8295212108014ca3a14ff11
-  
+  sha256: ecac044bb3e627cce2d942332e0747a1bac496da2094763a0d61c89c1419b652
+
 build:
   number: 0
   skip: true  # [win]
@@ -18,9 +18,9 @@ requirements:
     - {{ compiler('cxx') }}
     - make
   host:
-    - openfst ==1.7.7
+    - openfst ==1.7.8
   run:
-    - openfst ==1.7.7
+    - openfst ==1.7.8
 
 test:
   commands:
