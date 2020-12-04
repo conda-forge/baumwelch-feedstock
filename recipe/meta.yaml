@@ -1,5 +1,5 @@
 {% set name = "baumwelch" %}
-{% set version = "0.3.4" %}
+{% set version = "0.3.5" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: http://www.opengrm.org/twiki/pub/GRM/BaumWelchDownload/{{ name }}-{{ version }}.tar.gz
-  sha256: c0a32c2c2411b8c60986581af3b54cbb937e16dfe05cb128771967c952425155
+  sha256: 634361fea2ee543bb140bf6a1e89bf9e1b0b46337710ee1f9093f6f623c76029
 
 build:
   number: 0
