@@ -7,7 +7,7 @@ package:
 
 source:
   url: http://www.opengrm.org/twiki/pub/GRM/BaumWelchDownload/{{ name }}-{{ version }}.tar.gz
-  sha256: 990154c469bcf9c78b19f93a00418494989433c8c859c95dee31afc42a498844
+  sha256: b18ab010af0c1663a475be2dcc285367a5078b496e10ad040d019901b19e62b8
 
 build:
   number: 0
