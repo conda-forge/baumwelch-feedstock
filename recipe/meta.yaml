@@ -8,26 +8,41 @@ package:
 source:
   url: http://www.opengrm.org/twiki/pub/GRM/BaumWelchDownload/{{ name }}-{{ version }}.tar.gz
   sha256: b18ab010af0c1663a475be2dcc285367a5078b496e10ad040d019901b19e62b8
+  patches:
+    - patches/0001-Add-CMake-files.patch  # [win]
 
 build:
-  number: 1
-  skip: true  # [win]
+  number: 2
 
 requirements:
   build:
     - {{ compiler('cxx') }}
-    - make
-    - gnuconfig   # [unix]
+    - make                    # [unix]
+    - gnuconfig               # [unix]
+    - cmake                   # [win]
+    - ninja                   # [win]
+    - m2-patch                # [win]
   host:
     - openfst ==1.8.2
+    - dlfcn-win32             # [win]
+    - icu                     # [win]
+    - zlib                    # [win]
   run:
     - openfst ==1.8.2
+    - ucrt                    # [win]
+
+{% set baumwelch_binaries = [
+    "baumwelchdecode", "baumwelchrandomize", "baumwelchtrain"
+] %}
 
 test:
   commands:
-    - baumwelchdecode --helpshort || [[ $? == 1 ]]
-    - baumwelchrandomize --helpshort || [[ $? == 1 ]]
-    - baumwelchtrain --helpshort || [[ $? == 1 ]]
+    # binaries:
+    {% for each_bin in baumwelch_binaries %}
+      # If behaving properly these will have return code 1.
+      - {{ each_bin }} --helpshort >/dev/null || [[ $? == 1 ]]     # [unix]
+      - {{ each_bin }} --helpshort & if errorlevel 1 ( exit /b 0)  # [win]
+    {% endfor %}
 
 about:
   home: http://bauwmelch.opengrm.org

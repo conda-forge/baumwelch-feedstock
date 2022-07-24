@@ -1,0 +1,149 @@
+From 10f9cf71d30821e2db3fc270cd9bdb2437b00043 Mon Sep 17 00:00:00 2001
+From: Michael McAuliffe <michael.e.mcauliffe@gmail.com>
+Date: Sat, 16 Jul 2022 11:41:20 -0700
+Subject: [PATCH] Add CMake files
+
+---
+ CMakeLists.txt                     | 28 ++++++++++++++++++++++++++++
+ src/CMakeLists.txt                 |  7 +++++++
+ src/bin/CMakeLists.txt             | 16 ++++++++++++++++
+ src/bin/baumwelchrandomize-main.cc |  2 +-
+ src/bin/baumwelchtrain-main.cc     | 10 +++++-----
+ src/script/CMakeLists.txt          | 18 ++++++++++++++++++
+ 6 files changed, 75 insertions(+), 6 deletions(-)
+ create mode 100644 CMakeLists.txt
+ create mode 100644 src/CMakeLists.txt
+ create mode 100644 src/bin/CMakeLists.txt
+ create mode 100644 src/script/CMakeLists.txt
+
+diff --git CMakeLists.txt CMakeLists.txt
+new file mode 100644
+index 0000000..3f1693b
+--- /dev/null
++++ CMakeLists.txt
+@@ -0,0 +1,28 @@
++project(baumwelch)
++cmake_minimum_required(VERSION 3.18)
++
++include(GNUInstallDirs)
++include(GenerateExportHeader)
++set(CMAKE_MACOSX_RPATH 1)
++set(CMAKE_CXX_STANDARD 17)
++set(CMAKE_CXX_EXTENSIONS OFF)
++
++set(CMAKE_POSITION_INDEPENDENT_CODE ON)
++if (MSVC)
++    find_package(dlfcn-win32 REQUIRED)
++    set(CMAKE_DL_LIBS dlfcn-win32::dl)
++    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
++    add_definitions(-DWIN32_LEAN_AND_MEAN)
++    add_definitions(-DNOMINMAX)
++    add_definitions(-D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
++    add_definitions(-D_USE_MATH_DEFINES)
++    add_compile_options(/permissive- /FS /wd4819 /EHsc /bigobj)
++
++    # some warnings related with fst
++    add_compile_options(/wd4018 /wd4244 /wd4267 /wd4291 /wd4305)
++endif (MSVC)
++option(BUILD_SHARED_LIBS "Build shared libraries" ON)
++
++set(SOVERSION "36")
++
++add_subdirectory(src)
+diff --git src/CMakeLists.txt src/CMakeLists.txt
+new file mode 100644
+index 0000000..5b8cff2
+--- /dev/null
++++ src/CMakeLists.txt
+@@ -0,0 +1,7 @@
++include_directories(./include/)
++install(DIRECTORY include/ DESTINATION include/
++        FILES_MATCHING PATTERN "*.h")
++
++add_subdirectory(script)
++
++add_subdirectory(bin)
+\ No newline at end of file
+diff --git src/bin/CMakeLists.txt src/bin/CMakeLists.txt
+new file mode 100644
+index 0000000..9ed23e4
+--- /dev/null
++++ src/bin/CMakeLists.txt
+@@ -0,0 +1,16 @@
++function (add_executable2 _name)
++    add_executable(${ARGV})
++    if (TARGET ${_name})
++        target_link_libraries(${_name} baumwelchscript fstfarscript fstfar fstscriptutils fstscript fst ${CMAKE_DL_LIBS})
++    endif()
++
++    install(TARGETS ${_name} RUNTIME DESTINATION bin)
++endfunction()
++
++include_directories(../include)
++
++add_executable2(baumwelchdecode baumwelchdecode-main.cc baumwelchdecode.cc)
++
++add_executable2(baumwelchrandomize baumwelchrandomize-main.cc baumwelchrandomize.cc)
++
++add_executable2(baumwelchtrain  baumwelchtrain-main.cc baumwelchtrain.cc)
+diff --git src/bin/baumwelchrandomize-main.cc src/bin/baumwelchrandomize-main.cc
+index 86169fd..5276367 100644
+--- src/bin/baumwelchrandomize-main.cc
++++ src/bin/baumwelchrandomize-main.cc
+@@ -22,7 +22,7 @@
+ 
+ #include <baumwelch/randomizescript.h>
+ 
+-DECLARE_uint64(seed);
++DECLARE_EXE_uint64(seed);
+ 
+ int baumwelchrandomize_main(int argc, char **argv) {
+   namespace s = fst::script;
+diff --git src/bin/baumwelchtrain-main.cc src/bin/baumwelchtrain-main.cc
+index 2fb4bef..e18d990 100644
+--- src/bin/baumwelchtrain-main.cc
++++ src/bin/baumwelchtrain-main.cc
+@@ -22,11 +22,11 @@
+ 
+ #include <baumwelch/trainscript.h>
+ 
+-DECLARE_int32(batch_size);
+-DECLARE_double(delta);
+-DECLARE_double(alpha);
+-DECLARE_int32(max_iters);
+-DECLARE_bool(normalize_ilabel);
++DECLARE_EXE_int32(batch_size);
++DECLARE_EXE_double(delta);
++DECLARE_EXE_double(alpha);
++DECLARE_EXE_int32(max_iters);
++DECLARE_EXE_bool(normalize_ilabel);
+ 
+ int baumwelchtrain_main(int argc, char **argv) {
+   namespace s = fst::script;
+diff --git src/script/CMakeLists.txt src/script/CMakeLists.txt
+new file mode 100644
+index 0000000..ed0e01b
+--- /dev/null
++++ src/script/CMakeLists.txt
+@@ -0,0 +1,18 @@
++
++add_library(baumwelchscript
++SHARED
++decodescript.cc
++randomizescript.cc
++trainscript.cc
++)
++target_link_libraries(baumwelchscript PUBLIC fst fstfar ${CMAKE_DL_LIBS})
++target_include_directories(baumwelchscript PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
++                         $<INSTALL_INTERFACE:include>)
++
++set_target_properties(baumwelchscript PROPERTIES
++SOVERSION "${SOVERSION}"
++)
++install(TARGETS baumwelchscript
++LIBRARY DESTINATION lib
++ARCHIVE DESTINATION lib
++RUNTIME DESTINATION bin)
+-- 
+2.35.3
+
