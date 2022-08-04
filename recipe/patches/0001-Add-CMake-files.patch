@@ -1,26 +1,55 @@
-From 10f9cf71d30821e2db3fc270cd9bdb2437b00043 Mon Sep 17 00:00:00 2001
+From 4ae4ae67b5dfe0b31a1a3b877bc6722863c34848 Mon Sep 17 00:00:00 2001
 From: Michael McAuliffe <michael.e.mcauliffe@gmail.com>
 Date: Sat, 16 Jul 2022 11:41:20 -0700
 Subject: [PATCH] Add CMake files
 
 ---
- CMakeLists.txt                     | 28 ++++++++++++++++++++++++++++
- src/CMakeLists.txt                 |  7 +++++++
- src/bin/CMakeLists.txt             | 16 ++++++++++++++++
- src/bin/baumwelchrandomize-main.cc |  2 +-
- src/bin/baumwelchtrain-main.cc     | 10 +++++-----
- src/script/CMakeLists.txt          | 18 ++++++++++++++++++
- 6 files changed, 75 insertions(+), 6 deletions(-)
+ .gitattributes                                | 18 ++++++++
+ CMakeLists.txt                                | 28 +++++++++++++
+ src/CMakeLists.txt                            |  7 ++++
+ src/bin/CMakeLists.txt                        | 16 +++++++
+ .../baumwelch/baumwelchscript_Export.h        | 42 +++++++++++++++++++
+ src/include/baumwelch/decodescript.h          |  3 +-
+ src/include/baumwelch/randomizescript.h       |  3 +-
+ src/include/baumwelch/trainscript.h           |  3 +-
+ src/script/CMakeLists.txt                     | 24 +++++++++++
+ 9 files changed, 141 insertions(+), 3 deletions(-)
+ create mode 100644 .gitattributes
  create mode 100644 CMakeLists.txt
  create mode 100644 src/CMakeLists.txt
  create mode 100644 src/bin/CMakeLists.txt
+ create mode 100644 src/include/baumwelch/baumwelchscript_Export.h
  create mode 100644 src/script/CMakeLists.txt
 
-diff --git CMakeLists.txt CMakeLists.txt
+diff --git a/.gitattributes b/.gitattributes
+new file mode 100644
+index 0000000..02a8638
+--- /dev/null
++++ b/.gitattributes
+@@ -0,0 +1,18 @@
++*.php text
++        *.css text
++        *.js text
++        *.json text
++        *.htm text
++        *.html text
++        *.xml text
++        *.txt text
++        *.pyx text
++        *.inc text
++        *.cpp text
++        *.pxd text
++        *.in text
++        *.am text
++        *.sh text
++        *.h text
++        *.cc text
++
+diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
 index 0000000..3f1693b
 --- /dev/null
-+++ CMakeLists.txt
++++ b/CMakeLists.txt
 @@ -0,0 +1,28 @@
 +project(baumwelch)
 +cmake_minimum_required(VERSION 3.18)
@@ -50,11 +79,11 @@ index 0000000..3f1693b
 +set(SOVERSION "36")
 +
 +add_subdirectory(src)
-diff --git src/CMakeLists.txt src/CMakeLists.txt
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
 new file mode 100644
 index 0000000..5b8cff2
 --- /dev/null
-+++ src/CMakeLists.txt
++++ b/src/CMakeLists.txt
 @@ -0,0 +1,7 @@
 +include_directories(./include/)
 +install(DIRECTORY include/ DESTINATION include/
@@ -64,16 +93,16 @@ index 0000000..5b8cff2
 +
 +add_subdirectory(bin)
 \ No newline at end of file
-diff --git src/bin/CMakeLists.txt src/bin/CMakeLists.txt
+diff --git a/src/bin/CMakeLists.txt b/src/bin/CMakeLists.txt
 new file mode 100644
-index 0000000..9ed23e4
+index 0000000..7d8e691
 --- /dev/null
-+++ src/bin/CMakeLists.txt
++++ b/src/bin/CMakeLists.txt
 @@ -0,0 +1,16 @@
 +function (add_executable2 _name)
 +    add_executable(${ARGV})
 +    if (TARGET ${_name})
-+        target_link_libraries(${_name} baumwelchscript fstfarscript fstfar fstscriptutils fstscript fst ${CMAKE_DL_LIBS})
++        target_link_libraries(${_name} baumwelchscript fstfarscript fstfar fstscript fst ${CMAKE_DL_LIBS})
 +    endif()
 +
 +    install(TARGETS ${_name} RUNTIME DESTINATION bin)
@@ -86,46 +115,123 @@ index 0000000..9ed23e4
 +add_executable2(baumwelchrandomize baumwelchrandomize-main.cc baumwelchrandomize.cc)
 +
 +add_executable2(baumwelchtrain  baumwelchtrain-main.cc baumwelchtrain.cc)
-diff --git src/bin/baumwelchrandomize-main.cc src/bin/baumwelchrandomize-main.cc
-index 86169fd..5276367 100644
---- src/bin/baumwelchrandomize-main.cc
-+++ src/bin/baumwelchrandomize-main.cc
-@@ -22,7 +22,7 @@
- 
- #include <baumwelch/randomizescript.h>
- 
--DECLARE_uint64(seed);
-+DECLARE_EXE_uint64(seed);
- 
- int baumwelchrandomize_main(int argc, char **argv) {
-   namespace s = fst::script;
-diff --git src/bin/baumwelchtrain-main.cc src/bin/baumwelchtrain-main.cc
-index 2fb4bef..e18d990 100644
---- src/bin/baumwelchtrain-main.cc
-+++ src/bin/baumwelchtrain-main.cc
-@@ -22,11 +22,11 @@
- 
- #include <baumwelch/trainscript.h>
- 
--DECLARE_int32(batch_size);
--DECLARE_double(delta);
--DECLARE_double(alpha);
--DECLARE_int32(max_iters);
--DECLARE_bool(normalize_ilabel);
-+DECLARE_EXE_int32(batch_size);
-+DECLARE_EXE_double(delta);
-+DECLARE_EXE_double(alpha);
-+DECLARE_EXE_int32(max_iters);
-+DECLARE_EXE_bool(normalize_ilabel);
- 
- int baumwelchtrain_main(int argc, char **argv) {
-   namespace s = fst::script;
-diff --git src/script/CMakeLists.txt src/script/CMakeLists.txt
+diff --git a/src/include/baumwelch/baumwelchscript_Export.h b/src/include/baumwelch/baumwelchscript_Export.h
 new file mode 100644
-index 0000000..ed0e01b
+index 0000000..d87a341
 --- /dev/null
-+++ src/script/CMakeLists.txt
-@@ -0,0 +1,18 @@
++++ b/src/include/baumwelch/baumwelchscript_Export.h
+@@ -0,0 +1,42 @@
++
++#ifndef baumwelchscript_EXPORT_H
++#define baumwelchscript_EXPORT_H
++
++#ifdef baumwelchscript_BUILT_AS_STATIC
++#  define baumwelchscript_EXPORT
++#  define BAUMWELCHSCRIPT_NO_EXPORT
++#else
++#  ifndef baumwelchscript_EXPORT
++#    ifdef baumwelchscript_EXPORTS
++        /* We are building this library */
++#      define baumwelchscript_EXPORT __declspec(dllexport)
++#    else
++        /* We are using this library */
++#      define baumwelchscript_EXPORT __declspec(dllimport)
++#    endif
++#  endif
++
++#  ifndef BAUMWELCHSCRIPT_NO_EXPORT
++#    define BAUMWELCHSCRIPT_NO_EXPORT 
++#  endif
++#endif
++
++#ifndef BAUMWELCHSCRIPT_DEPRECATED
++#  define BAUMWELCHSCRIPT_DEPRECATED __declspec(deprecated)
++#endif
++
++#ifndef BAUMWELCHSCRIPT_DEPRECATED_EXPORT
++#  define BAUMWELCHSCRIPT_DEPRECATED_EXPORT baumwelchscript_EXPORT BAUMWELCHSCRIPT_DEPRECATED
++#endif
++
++#ifndef BAUMWELCHSCRIPT_DEPRECATED_NO_EXPORT
++#  define BAUMWELCHSCRIPT_DEPRECATED_NO_EXPORT BAUMWELCHSCRIPT_NO_EXPORT BAUMWELCHSCRIPT_DEPRECATED
++#endif
++
++#if 0 /* DEFINE_NO_DEPRECATED */
++#  ifndef BAUMWELCHSCRIPT_NO_DEPRECATED
++#    define BAUMWELCHSCRIPT_NO_DEPRECATED
++#  endif
++#endif
++
++#endif /* baumwelchscript_EXPORT_H */
+diff --git a/src/include/baumwelch/decodescript.h b/src/include/baumwelch/decodescript.h
+index ae0eee5..f390e73 100644
+--- a/src/include/baumwelch/decodescript.h
++++ b/src/include/baumwelch/decodescript.h
+@@ -20,6 +20,7 @@
+ #include <fst/extensions/far/far-class.h>
+ #include <fst/script/fst-class.h>
+ #include <baumwelch/decode.h>
++#include <baumwelch/baumwelchscript_Export.h>
+ 
+ namespace fst {
+ namespace script {
+@@ -36,7 +37,7 @@ void Decode(BaumWelchDecodeArgs *args) {
+   Decode(input, output, model, hypotext);
+ }
+ 
+-void Decode(FarReaderClass &input, FarReaderClass &output,
++void baumwelchscript_EXPORT Decode(FarReaderClass &input, FarReaderClass &output,
+             const FstClass &model, FarWriterClass &hypotext);
+ 
+ }  // namespace script
+diff --git a/src/include/baumwelch/randomizescript.h b/src/include/baumwelch/randomizescript.h
+index 263e367..10f03d1 100644
+--- a/src/include/baumwelch/randomizescript.h
++++ b/src/include/baumwelch/randomizescript.h
+@@ -21,6 +21,7 @@
+ 
+ #include <fst/script/fst-class.h>
+ #include <baumwelch/randomize.h>
++#include <baumwelch/baumwelchscript_Export.h>
+ 
+ namespace fst {
+ namespace script {
+@@ -33,7 +34,7 @@ void Randomize(BaumWelchRandomizeArgs *args) {
+   Randomize(model, std::get<1>(*args));
+ }
+ 
+-void Randomize(MutableFstClass *fst, uint64_t seed = std::random_device()());
++void baumwelchscript_EXPORT Randomize(MutableFstClass *fst, uint64_t seed = std::random_device()());
+ 
+ }  // namespace script
+ }  // namespace fst
+diff --git a/src/include/baumwelch/trainscript.h b/src/include/baumwelch/trainscript.h
+index 25e8c8f..9584882 100644
+--- a/src/include/baumwelch/trainscript.h
++++ b/src/include/baumwelch/trainscript.h
+@@ -20,6 +20,7 @@
+ #include <fst/extensions/far/far-class.h>
+ #include <fst/script/fst-class.h>
+ #include <baumwelch/train.h>
++#include <baumwelch/baumwelchscript_Export.h>
+ 
+ namespace fst {
+ namespace script {
+@@ -36,7 +37,7 @@ void Train(BaumWelchTrainArgs *args) {
+   Train(input, output, model, std::get<3>(*args), std::get<4>(*args));
+ }
+ 
+-void Train(FarReaderClass &input, FarReaderClass &output,
++void baumwelchscript_EXPORT Train(FarReaderClass &input, FarReaderClass &output,
+            MutableFstClass *model, bool normalize_ilabel = true,
+            const TrainOptions &opts = TrainOptions());
+ 
+diff --git a/src/script/CMakeLists.txt b/src/script/CMakeLists.txt
+new file mode 100644
+index 0000000..2dbb41b
+--- /dev/null
++++ b/src/script/CMakeLists.txt
+@@ -0,0 +1,24 @@
 +
 +add_library(baumwelchscript
 +SHARED
@@ -133,7 +239,13 @@ index 0000000..ed0e01b
 +randomizescript.cc
 +trainscript.cc
 +)
-+target_link_libraries(baumwelchscript PUBLIC fst fstfar ${CMAKE_DL_LIBS})
++GENERATE_EXPORT_HEADER( baumwelchscript
++           BASE_NAME baumwelchscript
++           EXPORT_MACRO_NAME baumwelchscript_EXPORT
++           EXPORT_FILE_NAME ${CMAKE_BINARY_DIR}/include/baumwelch/baumwelchscript_Export.h
++           STATIC_DEFINE baumwelchscript_BUILT_AS_STATIC
++)
++target_link_libraries(baumwelchscript PUBLIC fst fstscript fstfar fstfarscript ${CMAKE_DL_LIBS})
 +target_include_directories(baumwelchscript PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 +                         $<INSTALL_INTERFACE:include>)
 +
