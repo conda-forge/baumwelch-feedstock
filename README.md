@@ -189,4 +189,5 @@ Feedstock Maintainers
 =====================
 
 * [@kylebgorman](https://github.com/kylebgorman/)
+* [@mmcauliffe](https://github.com/mmcauliffe/)
 
