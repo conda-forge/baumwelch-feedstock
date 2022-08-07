@@ -1,10 +1,9 @@
-From 4ae4ae67b5dfe0b31a1a3b877bc6722863c34848 Mon Sep 17 00:00:00 2001
+From f1b4d56e351a7e475aa8d25ab6601ba130dfef60 Mon Sep 17 00:00:00 2001
 From: Michael McAuliffe <michael.e.mcauliffe@gmail.com>
-Date: Sat, 16 Jul 2022 11:41:20 -0700
+Date: Sun, 7 Aug 2022 12:26:47 -0700
 Subject: [PATCH] Add CMake files
 
 ---
- .gitattributes                                | 18 ++++++++
  CMakeLists.txt                                | 28 +++++++++++++
  src/CMakeLists.txt                            |  7 ++++
  src/bin/CMakeLists.txt                        | 16 +++++++
@@ -13,38 +12,13 @@ Subject: [PATCH] Add CMake files
  src/include/baumwelch/randomizescript.h       |  3 +-
  src/include/baumwelch/trainscript.h           |  3 +-
  src/script/CMakeLists.txt                     | 24 +++++++++++
- 9 files changed, 141 insertions(+), 3 deletions(-)
- create mode 100644 .gitattributes
+ 8 files changed, 123 insertions(+), 3 deletions(-)
  create mode 100644 CMakeLists.txt
  create mode 100644 src/CMakeLists.txt
  create mode 100644 src/bin/CMakeLists.txt
  create mode 100644 src/include/baumwelch/baumwelchscript_Export.h
  create mode 100644 src/script/CMakeLists.txt
 
-diff --git a/.gitattributes b/.gitattributes
-new file mode 100644
-index 0000000..02a8638
---- /dev/null
-+++ b/.gitattributes
-@@ -0,0 +1,18 @@
-+*.php text
-+        *.css text
-+        *.js text
-+        *.json text
-+        *.htm text
-+        *.html text
-+        *.xml text
-+        *.txt text
-+        *.pyx text
-+        *.inc text
-+        *.cpp text
-+        *.pxd text
-+        *.in text
-+        *.am text
-+        *.sh text
-+        *.h text
-+        *.cc text
-+
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
 index 0000000..3f1693b
@@ -117,7 +91,7 @@ index 0000000..7d8e691
 +add_executable2(baumwelchtrain  baumwelchtrain-main.cc baumwelchtrain.cc)
 diff --git a/src/include/baumwelch/baumwelchscript_Export.h b/src/include/baumwelch/baumwelchscript_Export.h
 new file mode 100644
-index 0000000..d87a341
+index 0000000..6ed7332
 --- /dev/null
 +++ b/src/include/baumwelch/baumwelchscript_Export.h
 @@ -0,0 +1,42 @@
@@ -140,7 +114,7 @@ index 0000000..d87a341
 +#  endif
 +
 +#  ifndef BAUMWELCHSCRIPT_NO_EXPORT
-+#    define BAUMWELCHSCRIPT_NO_EXPORT 
++#    define BAUMWELCHSCRIPT_NO_EXPORT
 +#  endif
 +#endif
 +
@@ -257,5 +231,5 @@ index 0000000..2dbb41b
 +ARCHIVE DESTINATION lib
 +RUNTIME DESTINATION bin)
 -- 
-2.35.3
+2.37.1
 
