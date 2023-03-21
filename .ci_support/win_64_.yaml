@@ -5,10 +5,7 @@ channel_targets:
 cxx_compiler:
 - vs2019
 icu:
-- '70'
-pin_run_as_build:
-  zlib:
-    max_pin: x.x
+- '72'
 target_platform:
 - win-64
 zlib:
