@@ -45,7 +45,7 @@ test:
     {% endfor %}
 
 about:
-  home: http://bauwmelch.opengrm.org
+  home: http://baumwelch.opengrm.org
   license: Apache-2.0
   license_file: LICENSE
   summary: Baum-Welch/expectation-maximization training and decoding
