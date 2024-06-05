@@ -3,7 +3,7 @@ About baumwelch-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/baumwelch-feedstock/blob/main/LICENSE.txt)
 
-Home: http://bauwmelch.opengrm.org
+Home: http://baumwelch.opengrm.org
 
 Package license: Apache-2.0
 
