@@ -1,5 +1,5 @@
 {% set name = "baumwelch" %}
-{% set version = "0.3.8" %}
+{% set version = "0.3.9" %}
 
 package:
   name: {{ name|lower }}
@@ -7,16 +7,16 @@ package:
 
 source:
   url: http://www.opengrm.org/twiki/pub/GRM/BaumWelchDownload/{{ name }}-{{ version }}.tar.gz
-  sha256: ae09dc09897d3fb02b3fc53a8b882c8a0cce893a57fc79a61bd63c75f32be528
+  sha256: 51102f6424ab71695d16b1ebf0183eec83de20d093c0571ab9755d1b7d11c991
   patches:
     - patches/0001-Add-CMake-files.patch  # [win]
 
 build:
-  number: 1
+  number: 0
 
 requirements:
   build:
-    - {{ compiler('cxx') }}
+    - {{ compiler("cxx") }}
     - make                    # [unix]
     - gnuconfig               # [unix]
     - cmake                   # [win]
