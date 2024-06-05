@@ -16,8 +16,7 @@ build:
 
 requirements:
   build:
-    - {{ compiler('cxx') }}
-    - {{ stdlib('c') }}
+    - {{ compiler("cxx") }}
     - make                    # [unix]
     - gnuconfig               # [unix]
     - cmake                   # [win]
