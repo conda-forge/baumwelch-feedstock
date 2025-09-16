@@ -6,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: http://www.opengrm.org/twiki/pub/GRM/BaumWelchDownload/{{ name }}-{{ version }}.tar.gz
+  url: http://206.196.111.47/twiki/pub/GRM/BaumWelchDownload/{{ name }}-{{ version }}.tar.gz
   sha256: 80cb35a7d625cf471bd874db0a01ff649261b87a05b409aa958164601bb99a71
   patches:
     - patches/0001-Add-CMake-files.patch  # [win]
