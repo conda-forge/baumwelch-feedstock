@@ -1,18 +1,18 @@
 {% set name = "baumwelch" %}
-{% set version = "0.3.9" %}
+{% set version = "0.3.10" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: http://www.opengrm.org/twiki/pub/GRM/BaumWelchDownload/{{ name }}-{{ version }}.tar.gz
-  sha256: 51102f6424ab71695d16b1ebf0183eec83de20d093c0571ab9755d1b7d11c991
+  url: http://206.196.111.47/twiki/pub/GRM/BaumWelchDownload/{{ name }}-{{ version }}.tar.gz
+  sha256: 80cb35a7d625cf471bd874db0a01ff649261b87a05b409aa958164601bb99a71
   patches:
     - patches/0001-Add-CMake-files.patch  # [win]
 
 build:
-  number: 3
+  number: 0
 
 requirements:
   build:
@@ -24,12 +24,12 @@ requirements:
     - ninja                   # [win]
     - m2-patch                # [win]
   host:
-    - openfst ==1.8.3
+    - openfst ==1.8.4
     - dlfcn-win32             # [win]
     - icu                     # [win]
     - zlib                    # [win]
   run:
-    - openfst ==1.8.3
+    - openfst ==1.8.4
     - ucrt                    # [win]
 
 {% set baumwelch_binaries = [
